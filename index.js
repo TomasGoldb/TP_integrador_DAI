@@ -21,22 +21,13 @@ const port = 3000;
 
 app.use(express.json());
 
+import EventsController from './controllers/EventsController'
 // GET: listar eventos
 app.get('/', async (req, res) => {
     res.status(200).json({"hola":"aa"});
 });
 
-app.get('/api/event', async (req, res) => {
-    const { data: eventsData, error: eventsError } = await supabase.from('events').select('*');
-    if(eventsError){
-        res.status(400).json({"error": "error al obtener eventos"});
-    } else if(eventsData==[]){
-        res.status(400).json({"error": "no hay eventos"}); 
-    }
-    console.log(eventsData);
-
-    res.status(200).json({"hola":"aa"});
-});
+app.use('/api/event', EventsController);
 
 app.listen(port, () => {
     console.log(`API escuchando en http://localhost:${port}`);
